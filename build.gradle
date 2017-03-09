@@ -1,0 +1,88 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.1.RELEASE'
+	}
+	repositories {
+		mavenLocal()
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+//project.ext.applicationDefaultJvmArgs = "-Xdebug" "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8787"
+
+springBoot {
+  mainClass = "my.Application"
+  //jvmArguments "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8787"
+}
+
+bootRun {
+	jvmArgs = ["-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8787"]
+}
+
+jar {
+	baseName = 'my'
+	version = 'my.jar'
+	manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                   'Implementation-Version': version
+    }
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+repositories {
+	mavenLocal()
+	jcenter()
+    mavenCentral()
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-actuator-docs")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    // compile("org.springframework.boot:spring-boot-devtools")
+
+	// compile('org.flywaydb:flyway-core')
+	compile group: 'org.apache.mina', name: 'mina-core', version: '2.0.16'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
+	compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.1'
+	compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.3'
+	
+    // add jsp support.
+    // runtime('tomcat:tomcat-embed-jasper')
+    // compile("org.apache.tomcat.embed:tomcat-embed-jasper")
+    // compile('javax.servlet:jstl')
+	
+	// runtime('mysql:mysql-connector-java')
+	runtime('com.h2database:h2')
+	// runtime('org.apache.derby:derby')
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+task copyJars(type: Copy) {
+  from configurations.runtime
+  into 'lib'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}

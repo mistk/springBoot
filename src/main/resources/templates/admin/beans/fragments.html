@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head (title)">
+<meta charset="UTF-8" />
+<title th:text="${title}">Fragments title</title>
+
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/css/easyui/themes/default/easyui.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/easyui/themes/icon.css}" />
+<script type="text/javascript" th:src="@{/js/lib/jquery.easyui.min.js}"></script> -->
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap/bootstrap.min.css}" />
+<script type="text/javascript" th:src="@{/js/lib/jquery-3.1.1.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/lib/jquery.form.js}"></script>
+<script type="text/javascript" th:src="@{/js/admin/beans/index.js}"></script>
+</head>
+<body>
+<section class="container-fluid" th:fragment="beanSearchSection (kw, actionUrl)">
+	<form th:fragment="beanSearchForm (kw)" th:action="${actionUrl}" id="beanSearchForm" method="get" class="form-inline">
+	    <div class="form-group">
+	        <input class="form-control" type="text" name="beanName" th:value="${kw}" placeholder="Search bean name" />
+	    </div>
+	    <input class="btn btn-default" type="submit" value="Search"/>
+	    <input type="hidden" value="searchBeans" name="action" />
+	</form>
+</section>
+<ul th:fragment="subtypes" th:if="${not #lists.isEmpty(subtypes)}" class="list-group">
+    <li th:each="bean : ${subtypes}" class="list-group-item">
+        <a th:href="${bean.url}" th:text="${bean.beanName}">beanName</a>
+    </li>
+</ul>
+</body>
+</html>
